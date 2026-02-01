@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="qemu_utils",
+    name="qutils",
     version="0.1.0",
     packages=find_packages(),
     description="A Python abstraction layer for qemu-img",

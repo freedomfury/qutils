@@ -160,7 +160,7 @@ wheels = [
 ]
 
 [[package]]
-name = "qemu-utils"
+name = "qutils"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

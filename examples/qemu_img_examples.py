@@ -1,5 +1,5 @@
 import os
-from qemu_utils.img import (
+from qutils.qemu_img import (
     CreateCommand, ConvertCommand, SnapshotCommand, RebaseCommand, DdCommand,
     InfoCommand, CheckCommand, CompareCommand, ResizeCommand, CommitCommand,
     MapCommand, MeasureCommand, AmendCommand, BenchCommand, BitmapCommand

@@ -1,0 +1,29 @@
+FROM python:3.13-alpine
+
+# Install system dependencies required for uv installation (curl for download)
+RUN apk add --no-cache curl
+
+# Download and run the official uv installation script
+RUN curl -LsSf -o /tmp/install_uv.sh https://astral.sh/uv/install.sh && \
+    sh /tmp/install_uv.sh && \
+    rm /tmp/install_uv.sh
+
+# Ensure the installed binary is in the PATH (it usually installs to /root/.local/bin)
+ENV PATH="/root/.local/bin:$PATH"
+
+# Optional: Set environment variables for better uv integration
+ENV UV_COMPILE_BYTECODE=1
+
+WORKDIR /app
+
+# Install system dependencies (qemu-img)
+RUN apk add --no-cache qemu-img
+
+# Copy the project files
+COPY . .
+
+# Install dependencies using uv
+RUN uv sync --frozen
+
+# Default command to run tests
+CMD ["uv", "run", "pytest"]

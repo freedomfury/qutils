@@ -1,7 +1,7 @@
 import pytest
 import shutil
 import os
-from qemu_utils.img import CreateCommand, InfoCommand, ResizeCommand
+from qutils.qemu_img import CreateCommand, InfoCommand, ResizeCommand
 
 # Marker to skip tests if qemu-img is not installed
 HAS_QEMU = shutil.which("qemu-img") is not None or os.environ.get("QEMU_IMG_PATH") is not None

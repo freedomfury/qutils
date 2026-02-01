@@ -1,7 +1,7 @@
 import pytest
 import os
 from unittest.mock import patch
-from qemu_utils.img import (
+from qutils.qemu_img import (
     CreateCommand, ConvertCommand, DdCommand, CompareCommand, ResizeCommand,
     CheckCommand, SnapshotCommand, RebaseCommand, MeasureCommand, BenchCommand,
     BaseQemuImgCommand
@@ -132,31 +132,31 @@ def test_global_options():
     assert cmd.get_command_string() == expected
 
 def test_info_command():
-    from qemu_utils.img import InfoCommand
+    from qutils.qemu_img import InfoCommand
     cmd = InfoCommand(filename="test.qcow2", output_format="json", backing_chain=True)
     expected = "/usr/bin/qemu-img info --output=json --backing-chain test.qcow2"
     assert cmd.get_command_string() == expected
 
 def test_map_command():
-    from qemu_utils.img import MapCommand
+    from qutils.qemu_img import MapCommand
     cmd = MapCommand(filename="test.qcow2", start_offset="1M", max_length="10M")
     expected = "/usr/bin/qemu-img map --start-offset=1M --max-length=10M test.qcow2"
     assert cmd.get_command_string() == expected
 
 def test_measure_command():
-    from qemu_utils.img import MeasureCommand
+    from qutils.qemu_img import MeasureCommand
     cmd = MeasureCommand(size="10G", dest_format="qcow2")
     expected = "/usr/bin/qemu-img measure -O qcow2 --size 10G"
     assert cmd.get_command_string() == expected
 
 def test_amend_command():
-    from qemu_utils.img import AmendCommand
+    from qutils.qemu_img import AmendCommand
     cmd = AmendCommand(filename="test.qcow2", options={"compat": "1.1"}, force=True)
     expected = "/usr/bin/qemu-img amend --force -o compat=1.1 test.qcow2"
     assert cmd.get_command_string() == expected
 
 def test_bitmap_command():
-    from qemu_utils.img import BitmapCommand
+    from qutils.qemu_img import BitmapCommand
     cmd = BitmapCommand(filename="test.qcow2", bitmap_name="b1", add_bitmap=True, granularity="64k")
     expected = "/usr/bin/qemu-img bitmap --add -g 64k test.qcow2 b1"
     assert cmd.get_command_string() == expected
