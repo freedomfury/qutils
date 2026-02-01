@@ -26,7 +26,7 @@ def test_create_command():
     cmd = CreateCommand(
         filename="test.qcow2",
         size="10G",
-        fmt="qcow2",
+        format="qcow2",
         options={"cluster_size": "64k", "preallocation": "metadata"},
         backing_file="base.img"
     )
@@ -93,7 +93,7 @@ def test_rebase_command():
         filename="top.qcow2",
         backing_file="new_base.qcow2",
         unsafe=True,
-        backing_fmt="raw"
+        backing_format="raw"
     )
     expected = "/usr/bin/qemu-img rebase -u -b new_base.qcow2 -F raw top.qcow2"
     assert cmd.get_command_string() == expected
@@ -119,8 +119,8 @@ def test_check_command():
 
 def test_compare_command():
     cmd = CompareCommand(
-        filename1="img1.qcow2",
-        filename2="img2.qcow2",
+        filename_left="img1.qcow2",
+        filename_right="img2.qcow2",
         strict=True
     )
     expected = "/usr/bin/qemu-img compare -s img1.qcow2 img2.qcow2"

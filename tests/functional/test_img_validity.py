@@ -18,7 +18,7 @@ class TestImgValidity:
         img_path = str(tmp_path / "test.qcow2")
         
         # 1. Create
-        create = CreateCommand(filename=img_path, size="1M", fmt="qcow2")
+        create = CreateCommand(filename=img_path, size="1M", format="qcow2")
         create.execute()
         
         assert os.path.exists(img_path)
@@ -35,7 +35,7 @@ class TestImgValidity:
         img_path = str(tmp_path / "resize_test.img")
         
         # Create initial
-        CreateCommand(filename=img_path, size="1M", fmt="raw").execute()
+        CreateCommand(filename=img_path, size="1M", format="raw").execute()
         
         # Resize
         resize = ResizeCommand(filename=img_path, size="+1M")

@@ -109,9 +109,9 @@ class BaseQemuImgCommand:
 class CreateCommand(BaseQemuImgCommand):
     filename: str = ""
     size: str = ""
-    fmt: Optional[str] = None
+    format: Optional[str] = None
     backing_file: Optional[str] = None
-    backing_fmt: Optional[str] = None
+    backing_format: Optional[str] = None
     options: Dict[str, str] = field(default_factory=dict)
     unsafe: bool = False
 
@@ -123,12 +123,12 @@ class CreateCommand(BaseQemuImgCommand):
         args = []
         if self.unsafe:
             args.append("-u")
-        if self.fmt:
-            args.extend(["-f", self.fmt])
+        if self.format:
+            args.extend(["-f", self.format])
         if self.backing_file:
             args.extend(["-b", self.backing_file])
-        if self.backing_fmt:
-            args.extend(["-F", self.backing_fmt])
+        if self.backing_format:
+            args.extend(["-F", self.backing_format])
             
         if self.options:
             opts = ",".join([f"{k}={v}" for k, v in self.options.items()])
@@ -153,7 +153,7 @@ class ConvertCommand(BaseQemuImgCommand):
     rate_limit: Optional[str] = None
     snapshot_param: Optional[str] = None
     backing_file: Optional[str] = None
-    backing_fmt: Optional[str] = None
+    backing_format: Optional[str] = None
     target_is_zero: bool = False
     salvage: bool = False
 
@@ -176,7 +176,7 @@ class ConvertCommand(BaseQemuImgCommand):
         if self.rate_limit: args.extend(["-r", self.rate_limit])
         if self.snapshot_param: args.extend(["-l", self.snapshot_param])
         if self.backing_file: args.extend(["-B", self.backing_file])
-        if self.backing_fmt: args.extend(["-F", self.backing_fmt])
+        if self.backing_format: args.extend(["-F", self.backing_format])
 
         args.append(self.input_filename)
         args.append(self.output_filename)
@@ -189,7 +189,7 @@ class DdCommand(BaseQemuImgCommand):
     block_size: Optional[str] = None
     count: Optional[int] = None
     skip: Optional[int] = None
-    fmt: Optional[str] = None
+    format: Optional[str] = None
     dest_format: Optional[str] = None
 
     def __post_init__(self):
@@ -198,7 +198,7 @@ class DdCommand(BaseQemuImgCommand):
 
     def _build_args(self) -> List[str]:
         args = []
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         if self.dest_format: args.extend(["-O", self.dest_format])
         
         args.append(f"if={self.input_file}")
@@ -212,11 +212,11 @@ class DdCommand(BaseQemuImgCommand):
 
 @dataclass
 class CompareCommand(BaseQemuImgCommand):
-    filename1: str = ""
-    filename2: str = ""
+    filename_left: str = ""
+    filename_right: str = ""
     strict: bool = False
-    fmt_image1: Optional[str] = None
-    fmt_image2: Optional[str] = None
+    format_left: Optional[str] = None
+    format_right: Optional[str] = None
     src_cache: Optional[str] = None
 
     def __post_init__(self):
@@ -226,12 +226,12 @@ class CompareCommand(BaseQemuImgCommand):
     def _build_args(self) -> List[str]:
         args = []
         if self.strict: args.append("-s")
-        if self.fmt_image1: args.extend(["-f", self.fmt_image1])
-        if self.fmt_image2: args.extend(["-F", self.fmt_image2])
+        if self.format_left: args.extend(["-f", self.format_left])
+        if self.format_right: args.extend(["-F", self.format_right])
         if self.src_cache: args.extend(["-T", self.src_cache])
         
-        args.append(self.filename1)
-        args.append(self.filename2)
+        args.append(self.filename_left)
+        args.append(self.filename_right)
         return args
 
 @dataclass
@@ -240,7 +240,7 @@ class ResizeCommand(BaseQemuImgCommand):
     size: str = ""
     shrink: bool = False
     preallocation: Optional[str] = None
-    fmt: Optional[str] = None
+    format: Optional[str] = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -250,7 +250,7 @@ class ResizeCommand(BaseQemuImgCommand):
         args = []
         if self.shrink: args.append("--shrink")
         if self.preallocation: args.append(f"--preallocation={self.preallocation}")
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         
         args.append(self.filename)
         args.append(self.size)
@@ -285,7 +285,7 @@ class CommitCommand(BaseQemuImgCommand):
     progress: bool = False
     skip_empty: bool = False
     rate_limit: Optional[str] = None
-    fmt: Optional[str] = None
+    format: Optional[str] = None
     cache: Optional[str] = None
 
     def __post_init__(self):
@@ -298,7 +298,7 @@ class CommitCommand(BaseQemuImgCommand):
         if self.skip_empty: args.append("-d")
         if self.base: args.extend(["-b", self.base])
         if self.rate_limit: args.extend(["-r", self.rate_limit])
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         if self.cache: args.extend(["-t", self.cache])
         
         args.append(self.filename)
@@ -309,7 +309,7 @@ class InfoCommand(BaseQemuImgCommand):
     filename: str = ""
     output_format: Optional[str] = None
     backing_chain: bool = False
-    fmt: Optional[str] = None
+    format: Optional[str] = None
     force_share: bool = False
 
     def __post_init__(self):
@@ -320,7 +320,7 @@ class InfoCommand(BaseQemuImgCommand):
         args = []
         if self.output_format: args.append(f"--output={self.output_format}")
         if self.backing_chain: args.append("--backing-chain")
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         if self.force_share: args.append("-U")
         
         args.append(self.filename)
@@ -332,7 +332,7 @@ class MapCommand(BaseQemuImgCommand):
     output_format: Optional[str] = None
     start_offset: Optional[str] = None
     max_length: Optional[str] = None
-    fmt: Optional[str] = None
+    format: Optional[str] = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -343,7 +343,7 @@ class MapCommand(BaseQemuImgCommand):
         if self.output_format: args.append(f"--output={self.output_format}")
         if self.start_offset: args.append(f"--start-offset={self.start_offset}")
         if self.max_length: args.append(f"--max-length={self.max_length}")
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         
         args.append(self.filename)
         return args
@@ -355,7 +355,7 @@ class SnapshotCommand(BaseQemuImgCommand):
     apply_snapshot: Optional[str] = None
     create_snapshot: Optional[str] = None
     delete_snapshot: Optional[str] = None
-    fmt: Optional[str] = None
+    format: Optional[str] = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -363,7 +363,7 @@ class SnapshotCommand(BaseQemuImgCommand):
 
     def _build_args(self) -> List[str]:
         args = []
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         
         if self.list_snapshots:
             args.append("-l")
@@ -381,10 +381,10 @@ class SnapshotCommand(BaseQemuImgCommand):
 class RebaseCommand(BaseQemuImgCommand):
     filename: str = ""
     backing_file: Optional[str] = None
-    backing_fmt: Optional[str] = None
+    backing_format: Optional[str] = None
     unsafe: bool = False
     compress: bool = False
-    fmt: Optional[str] = None
+    format: Optional[str] = None
     cache: Optional[str] = None
     src_cache: Optional[str] = None
 
@@ -397,8 +397,8 @@ class RebaseCommand(BaseQemuImgCommand):
         if self.unsafe: args.append("-u")
         if self.compress: args.append("-c")
         if self.backing_file: args.extend(["-b", self.backing_file])
-        if self.backing_fmt: args.extend(["-F", self.backing_fmt])
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.backing_format: args.extend(["-F", self.backing_format])
+        if self.format: args.extend(["-f", self.format])
         if self.cache: args.extend(["-t", self.cache])
         if self.src_cache: args.extend(["-T", self.src_cache])
         
@@ -411,7 +411,7 @@ class MeasureCommand(BaseQemuImgCommand):
     size: Optional[str] = None
     output_format: Optional[str] = None
     dest_format: Optional[str] = None
-    fmt: Optional[str] = None
+    format: Optional[str] = None
 
     def __post_init__(self):
         super().__post_init__()
@@ -422,7 +422,7 @@ class MeasureCommand(BaseQemuImgCommand):
         if self.output_format: args.append(f"--output={self.output_format}")
         if self.dest_format: args.extend(["-O", self.dest_format])
         if self.size: args.extend(["--size", self.size])
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         
         if self.filename:
             args.append(self.filename)
@@ -432,7 +432,7 @@ class MeasureCommand(BaseQemuImgCommand):
 class AmendCommand(BaseQemuImgCommand):
     filename: str = ""
     options: Dict[str, str] = field(default_factory=dict)
-    fmt: Optional[str] = None
+    format: Optional[str] = None
     cache: Optional[str] = None
     force: bool = False
 
@@ -443,7 +443,7 @@ class AmendCommand(BaseQemuImgCommand):
     def _build_args(self) -> List[str]:
         args = []
         if self.force: args.append("--force")
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         if self.cache: args.extend(["-t", self.cache])
         
         if self.options:
@@ -458,7 +458,7 @@ class BenchCommand(BaseQemuImgCommand):
     filename: str = ""
     count: Optional[int] = None
     depth: Optional[int] = None
-    fmt: Optional[str] = None
+    format: Optional[str] = None
     flush_interval: Optional[int] = None
     aio: Optional[str] = None
     write: bool = False
@@ -478,7 +478,7 @@ class BenchCommand(BaseQemuImgCommand):
         
         if self.count is not None: args.extend(["-c", str(self.count)])
         if self.depth is not None: args.extend(["-d", str(self.depth)])
-        if self.fmt: args.extend(["-f", self.fmt])
+        if self.format: args.extend(["-f", self.format])
         if self.flush_interval is not None: args.append(f"--flush-interval={self.flush_interval}")
         if self.aio: args.extend(["-i", self.aio])
         if self.buffer_size: args.extend(["-s", self.buffer_size])
