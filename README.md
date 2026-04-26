@@ -1,6 +1,6 @@
-# qutils: Python QEMU Utilities
+# qemu-utility: Python QEMU Utilities
 
-`qutils` is a lightweight, zero-dependency Python wrapper for the `qemu-img` command-line utility. It provides a clean, object-oriented API for managing disk images, making it easy to create, convert, and inspect virtual machine disks directly from your Python code.
+The `qemu-utility` repository provides `qutils`, a lightweight, zero-dependency Python wrapper for the `qemu-img` command-line utility. It provides a clean, object-oriented API for managing disk images, making it easy to create, convert, and inspect virtual machine disks directly from your Python code.
 
 ## features
 
@@ -13,11 +13,11 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/qutils.git
-cd qutils
+git clone https://github.com/freedomfury/qemu-utility.git
+cd qemu-utility
 ```
 
-Since `qutils` is designed as a drop-in set of utilities, you can simply place the `qutils` folder into your own project or run scripts directly from the repository.
+Since this project is designed as a drop-in set of utilities, you can simply place the `qutils` folder into your own project or run scripts directly from the repository.
 
 ## usage
 
@@ -68,8 +68,8 @@ You can run the full test suite using `uv`. Note that functional tests require `
 uv run pytest
 
 # Run tests in Docker (Recommended)
-docker build -t qutils-tests -f Dockerfile.test .
-docker run --rm qutils-tests
+docker build -t qemu-utility-tests -f Dockerfile.test .
+docker run --rm qemu-utility-tests
 ```
 
 ## license
