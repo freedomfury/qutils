@@ -12,7 +12,7 @@ os.environ["QEMU_IMG_PATH"] = "/usr/local/bin/qemu-img"
 print("--- FULL QEMU-IMG Command Generation Examples (All 15 Actions) ---")
 
 # 1. Create
-cmd1 = CreateCommand(filename="disk.qcow2", size="50G", fmt="qcow2", options={"cluster_size": "256k"})
+cmd1 = CreateCommand(filename="disk.qcow2", size="50G", format="qcow2", options={"cluster_size": "256k"})
 print(f"CREATE:   {cmd1.get_command_string()}")
 
 # 2. Convert
@@ -24,7 +24,7 @@ cmd3 = DdCommand(input_file="input.img", output_file="output.img", block_size="1
 print(f"DD:       {cmd3.get_command_string()}")
 
 # 4. Compare
-cmd4 = CompareCommand(filename1="disk1.qcow2", filename2="disk2.qcow2", strict=True)
+cmd4 = CompareCommand(filename_left="disk1.qcow2", filename_right="disk2.qcow2", strict=True)
 print(f"COMPARE:  {cmd4.get_command_string()}")
 
 # 5. Resize

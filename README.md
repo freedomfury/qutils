@@ -1,15 +1,13 @@
 # qutils: Python QEMU Utilities
 
-> 🚧 **Work in Progress**: This project is currently in the early stages of development. It is one of several tools being created to provide a modern, Pythonic interface for the QEMU ecosystem.
-
 `qutils` is a lightweight, zero-dependency Python wrapper for the `qemu-img` command-line utility. It provides a clean, object-oriented API for managing disk images, making it easy to create, convert, and inspect virtual machine disks directly from your Python code.
 
 ## features
 
-*   **Complete Coverage**: Supports all 15 `qemu-img` subcommands (Create, Convert, Info, Snapshot, Rebase, etc.).
-*   **Type-Safe**: Uses Python `dataclasses` and type hints for a better developer experience.
-*   **Safe**: Automated validation ensures you don't run invalid commands.
-*   **Zero Dependencies**: The core library depends only on the standard library.
+* **Complete Coverage**: Supports all 15 `qemu-img` subcommands (Create, Convert, Info, Snapshot, Rebase, etc.).
+* **Type-Safe**: Uses Python `dataclasses` and type hints for a better developer experience.
+* **Safe**: Automated validation ensures you don't run invalid commands.
+* **Zero Dependencies**: The core library depends only on the standard library.
 
 ## installation
 
@@ -17,10 +15,9 @@
 # Clone the repository
 git clone https://github.com/yourusername/qutils.git
 cd qutils
-
-# Install with pip (or use uv/poetry)
-pip install .
 ```
+
+Since `qutils` is designed as a drop-in set of utilities, you can simply place the `qutils` folder into your own project or run scripts directly from the repository.
 
 ## usage
 
@@ -33,7 +30,7 @@ from qutils.qemu_img import CreateCommand
 cmd = CreateCommand(
     filename="server_disk.qcow2",
     size="50G",
-    fmt="qcow2",
+    format="qcow2",
     options={"preallocation": "metadata", "cluster_size": "256k"}
 )
 
